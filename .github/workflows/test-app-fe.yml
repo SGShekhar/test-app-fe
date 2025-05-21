@@ -32,7 +32,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-            - name: Deploy on EC2
+      - name: Deploy on EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << 'EOSSH'
             set -e
@@ -63,4 +63,3 @@ jobs:
 
             echo "Deployment completed successfully."
           EOSSH
-
