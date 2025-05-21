@@ -32,14 +32,23 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy on EC2
+            - name: Deploy on EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << 'EOSSH'
             set -e
-            echo "Navigating to project directory..."
-            cd /home/ubuntu/test-app-fe  # Update this path to your Next.js project directory on EC2
 
-            echo "Pulling latest changes..."
+            APP_DIR=/home/ubuntu/test-app-fe
+            REPO=https://github.com/SGShekhar/test-app-fe.git
+
+            echo "Checking if app directory exists..."
+            if [ ! -d "$APP_DIR" ]; then
+              echo "Directory does not exist. Cloning repo..."
+              git clone $REPO $APP_DIR
+            fi
+
+            cd $APP_DIR
+
+            echo "Fetching latest changes..."
             git fetch --all
             git reset --hard origin/main
 
@@ -49,8 +58,9 @@ jobs:
             echo "Building app..."
             npm run build
 
-            echo "Restarting PM2 (or your Node process)..."
+            echo "Restarting PM2 process..."
             pm2 restart next-app || pm2 start npm --name "next-app" -- start
 
             echo "Deployment completed successfully."
           EOSSH
+
