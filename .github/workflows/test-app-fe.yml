@@ -1,25 +1,56 @@
-name: Deploy Next.js
+name: Deploy Next.js Application
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  deploy:
+    name: Deploy to AWS EC2
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Build project
+      - name: Build Next.js App
         run: npm run build
 
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << 'EOSSH'
+            set -e
+            echo "Navigating to project directory..."
+            cd /home/ubuntu/test-app-fe  # Update this path to your Next.js project directory on EC2
+
+            echo "Pulling latest changes..."
+            git fetch --all
+            git reset --hard origin/main
+
+            echo "Installing dependencies..."
+            npm ci
+
+            echo "Building app..."
+            npm run build
+
+            echo "Restarting PM2 (or your Node process)..."
+            pm2 restart next-app || pm2 start npm --name "next-app" -- start
+
+            echo "Deployment completed successfully."
+          EOSSH
