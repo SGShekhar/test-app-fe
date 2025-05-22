@@ -21,7 +21,7 @@ export default function Home() {
             .
           </li>
           <li className="tracking-[-.01em]">
-            Share and see your changes instantly.
+            next js new application cicd..
           </li>
         </ol>
 
