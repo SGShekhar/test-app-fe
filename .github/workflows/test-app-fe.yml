@@ -36,6 +36,12 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/fe_key ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << 'EOSSH'
             set -e
+            echo "Adding swap memory..."
+            sudo fallocate -l 2G /swapfile || true
+            sudo chmod 600 /swapfile || true
+            sudo mkswap /swapfile || true
+            sudo swapon /swapfile || true
+            free -h
 
             echo "Navigating to project directory..."
             cd /home/ubuntu/test-app-fe  # Update to your app path
