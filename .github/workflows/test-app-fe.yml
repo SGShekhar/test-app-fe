@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Deploy to AWS EC2
     runs-on: ubuntu-24.04
+    environment: deploy-env-fe  # ✅ Link to the environment so vars are available
 
     steps:
       - name: Checkout Code
@@ -34,7 +35,7 @@ jobs:
 
       - name: Deploy on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/fe_key ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << 'EOSSH'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/fe_key ${{ secrets.SSH_USERNAME }}@${{ secrets.HOST }} << EOF
             set -e
 
             echo "Navigating to project directory..."
@@ -43,6 +44,11 @@ jobs:
             echo "Pulling latest changes..."
             git fetch --all
             git reset --hard origin/main
+
+            echo "Creating .env.local file..."
+            cat > .env.local <<EOL
+          NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
+          EOL
 
             echo "Installing dependencies..."
             npm ci
@@ -54,4 +60,4 @@ jobs:
             pm2 restart next-app || pm2 start npm --name "next-app" -- start
 
             echo "Deployment completed successfully."
-          EOSSH
+          EOF
