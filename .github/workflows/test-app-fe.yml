@@ -40,13 +40,20 @@ jobs:
 
             echo "Creating .env.local file..."
             cat > .env.local <<EOL
-          NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
-          EOL
+            NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
+            NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
+            NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
+            NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
+            EOL
+
             echo "Installing dependencies..."
             npm ci
+
             echo "Building app..."
             npm run build
+
             echo "Restarting PM2..."
             pm2 restart next-app || pm2 start npm --name "next-app" -- start
+
             echo "Deployment completed successfully."
           EOF
