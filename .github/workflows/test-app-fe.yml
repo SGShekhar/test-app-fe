@@ -39,12 +39,6 @@ jobs:
             git fetch --all
             git reset --hard origin/main
 
-            echo "Creating .env.local file..."
-            echo "NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}" > .env.local
-            echo "NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}" >> .env.local
-            echo "NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}" >> .env.local
-           
-
             echo "Installing dependencies..."
             npm ci
 
