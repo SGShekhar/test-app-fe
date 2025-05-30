@@ -39,14 +39,14 @@ jobs:
             git fetch --all
             git reset --hard origin/main
 
-            echo "Setting or updating NEXT_PUBLIC_FORTH_MY_SECRET_ENV in .env..."
-              touch .env
-              if grep -q '^NEXT_PUBLIC_FORTH_MY_SECRET_ENV=' .env; then
-                sed -i "s/^NEXT_PUBLIC_FORTH_MY_SECRET_ENV=.*/NEXT_PUBLIC_FORTH_MY_SECRET_ENV=\"$NEXT_PUBLIC_FORTH_MY_SECRET_ENV\"/" .env
-              else
-                echo "NEXT_PUBLIC_FORTH_MY_SECRET_ENV=\"$NEXT_PUBLIC_FORTH_MY_SECRET_ENV\"" >> .env
-              fi
-              
+            echo "Creating .env.local file..."
+            cat > .env.local <<EOL
+            NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
+            NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
+            NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
+            NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
+            EOL
+
             echo "Installing dependencies..."
             npm ci
 
