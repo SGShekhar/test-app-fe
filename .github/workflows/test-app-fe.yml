@@ -44,7 +44,7 @@ jobs:
             NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
             NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
             NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
-            EOL
+          EOL
 
             echo "Installing dependencies..."
             npm ci
