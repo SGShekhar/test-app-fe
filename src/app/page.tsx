@@ -17,7 +17,7 @@ export default function Home() {
           priority
         />
         <h2 className="text-lg font-semibold text-center text-gray-900 dark:text-white">
-          CICD Env Test: {mySecret}
+          Today CICD Env Test: {mySecret}
         </h2>
 
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
