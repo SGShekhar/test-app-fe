@@ -33,19 +33,20 @@ jobs:
             set -e
 
             echo "Navigating to project directory..."
-            cd /home/ubuntu/test-app-fe  # Update to your app path
+            cd /home/ubuntu/test-app-fe
 
             echo "Pulling latest changes..."
             git fetch --all
             git reset --hard origin/main
 
-            echo "Creating .env.local file..."
-            > .env.local 
-            NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
-            NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
-            NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
-            EOL
-
+            echo "Setting or updating NEXT_PUBLIC_FORTH_MY_SECRET_ENV in .env..."
+              touch .env
+              if grep -q '^NEXT_PUBLIC_FORTH_MY_SECRET_ENV=' .env; then
+                sed -i "s/^NEXT_PUBLIC_FORTH_MY_SECRET_ENV=.*/NEXT_PUBLIC_FORTH_MY_SECRET_ENV=\"$NEXT_PUBLIC_FORTH_MY_SECRET_ENV\"/" .env
+              else
+                echo "NEXT_PUBLIC_FORTH_MY_SECRET_ENV=\"$NEXT_PUBLIC_FORTH_MY_SECRET_ENV\"" >> .env
+              fi
+              
             echo "Installing dependencies..."
             npm ci
 
