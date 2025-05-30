@@ -33,20 +33,27 @@ jobs:
             set -e
 
             echo "Navigating to project directory..."
-            cd /home/ubuntu/test-app-fe  # Update this path as needed
+            cd /home/ubuntu/test-app-fe  # Update to your app path
 
-            echo "Pulling latest changes from main branch..."
+            echo "Pulling latest changes..."
             git fetch --all
             git reset --hard origin/main
+
+            echo "Creating .env.local file..."
+            > .env.local 
+            NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
+            NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
+            NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
+            EOL
 
             echo "Installing dependencies..."
             npm ci
 
-            echo "Building the application..."
+            echo "Building app..."
             npm run build
 
-            echo "Restarting PM2 process..."
+            echo "Restarting PM2..."
             pm2 restart next-app || pm2 start npm --name "next-app" -- start
 
-            echo "✅ Deployment completed successfully."
+            echo "Deployment completed successfully."
           EOF
