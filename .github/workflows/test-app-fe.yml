@@ -20,12 +20,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Next.js App
-        run: npm run build
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -40,6 +34,10 @@ jobs:
 
             echo "Navigating to project directory..."
             cd /home/ubuntu/test-app-fe  # Update to your app path
+
+            echo "Pulling latest changes..."
+            git fetch --all
+            git reset --hard origin/main
 
             echo "Creating .env.local file..."
             cat > .env.local <<EOL
