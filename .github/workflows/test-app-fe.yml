@@ -9,7 +9,7 @@ jobs:
   deploy:
     name: Deploy to AWS EC2
     runs-on: ubuntu-24.04
-    environment: deploy-env-fe  # ✅ Link to the environment so vars are available
+    environment: deploy-env-fe
 
     steps:
       - name: Checkout Code
@@ -40,8 +40,8 @@ jobs:
             git reset --hard origin/main
 
             echo "Creating .env.local file..."
-            cat > .env.local <<EOL
-          NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
+          
+          NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
           EOL
 
             echo "Installing dependencies..."
