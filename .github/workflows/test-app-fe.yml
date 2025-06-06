@@ -48,7 +48,7 @@ jobs:
           EOL
 
             echo "Installing dependencies..."
-            npm ci
+            npm install
 
             echo "Building app..."
             npm run build
