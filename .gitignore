@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore the entire .github folder (if you want to ignore others)
+/.github/*
+
+# But do NOT ignore the workflow file you want to commit
+!.github/workflows/
+!.github/workflows/test-app-fe.yml
