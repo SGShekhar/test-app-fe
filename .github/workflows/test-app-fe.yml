@@ -45,7 +45,7 @@ jobs:
             NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
             NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
             NEXT_PUBLIC_FIV_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FIV_MY_SECRET_ENV }}
-            TESTQA=${{ vars.TESTQA }}
+            NEXT_PUBLIC_TESTQA=${{ vars.NEXT_PUBLIC_TESTQA }}
           EOL
 
             echo "Installing dependencies..."
