@@ -29,7 +29,7 @@ export default function Home() {
             .
           </li>
           <li className="tracking-[-.01em]">
-          new branch added test cicd
+          new branch testcicd branch  to qa branch then qa to main testing CICD
           </li>
         </ol>
 
