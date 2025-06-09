@@ -1,4 +1,4 @@
-name: Deploy Next.js Application
+name: QA Deploy Next.js Application
 
 on:
   push:
@@ -25,6 +25,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/fe_key
           chmod 600 ~/.ssh/fe_key
+
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: Deploy on EC2
         run: |
@@ -38,14 +39,22 @@ jobs:
             git fetch --all
             git reset --hard origin/main
 
-            echo "Creating .env.local file..."
-            cat > .env.local <<EOL
-            NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}
-            NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}
-            NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}
-            NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}
-            NEXT_PUBLIC_FIV_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FIV_MY_SECRET_ENV }}
-          EOL
+            echo "Creating or updating .env.local file..."
+            touch .env.local
+
+            sed -i '/^NEXT_PUBLIC_MY_SECRET_ENV=/d' .env.local
+            sed -i '/^NEXT_PUBLIC_SECOND_MY_SECRET_ENV=/d' .env.local
+            sed -i '/^NEXT_PUBLIC_THIRD_MY_SECRET_ENV=/d' .env.local
+            sed -i '/^NEXT_PUBLIC_FORTH_MY_SECRET_ENV=/d' .env.local
+            sed -i '/^NEXT_PUBLIC_FIV_MY_SECRET_ENV=/d' .env.local
+            sed -i '/^NEXT_PUBLIC_TESTQA=/d' .env.local
+
+            echo "NEXT_PUBLIC_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_MY_SECRET_ENV }}" >> .env.local
+            echo "NEXT_PUBLIC_SECOND_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_SECOND_MY_SECRET_ENV }}" >> .env.local
+            echo "NEXT_PUBLIC_THIRD_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_THIRD_MY_SECRET_ENV }}" >> .env.local
+            echo "NEXT_PUBLIC_FORTH_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FORTH_MY_SECRET_ENV }}" >> .env.local
+            echo "NEXT_PUBLIC_FIV_MY_SECRET_ENV=${{ vars.NEXT_PUBLIC_FIV_MY_SECRET_ENV }}" >> .env.local
+            echo "NEXT_PUBLIC_TESTQA=${{ vars.NEXT_PUBLIC_TESTQA }}" >> .env.local
 
             echo "Installing dependencies..."
             npm ci
