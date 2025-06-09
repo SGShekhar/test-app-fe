@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 export default function Home() {
-  const mySecret = process.env.NEXT_PUBLIC_TESTQA;
+  const mySecret = process.env.NEXT_PUBLIC_FIV_MY_SECRET_ENV;
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -17,7 +17,7 @@ export default function Home() {
           priority
         />
         <h2 className="text-lg font-semibold text-center text-gray-900 dark:text-white">
-          Main server Today Env Variable Test: {mySecret}
+          Main server Today Env Variable Testing new variable: {mySecret}
         </h2>
 
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
