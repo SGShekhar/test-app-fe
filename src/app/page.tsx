@@ -29,7 +29,7 @@ export default function Home() {
             .
           </li>
           <li className="tracking-[-.01em]">
-            Test New CICD and see your  QA  branch changes instantly.
+          new branch added test cicd
           </li>
         </ol>
 
